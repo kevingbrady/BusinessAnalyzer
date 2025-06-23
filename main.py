@@ -2,6 +2,7 @@ import json
 import requests
 import os
 from utils import get_keys_at_indent
+from collections import Counter
 
 
 if __name__ == '__main__':
@@ -18,10 +19,84 @@ if __name__ == '__main__':
     data_path = '/home/kgb/PycharmProjects/BusinessAnalyzer/company_data'
     directory = os.listdir(data_path)
 
-    for file in directory:
+    top_features = [
+        'Assets',
+        'LiabilitiesAndStockholdersEquity',
+        'NetIncomeLoss',
+        'NetCashProvidedByUsedInOperatingActivities',
+        'NetCashProvidedByUsedInFinancingActivities',
+        'EntityCommonStockSharesOutstanding',
+        'StockholdersEquity',
+        'CashAndCashEquivalentsAtCarryingValue',
+        'Liabilities',
+        'RetainedEarningsAccumulatedDeficit',
+        'NetCashProvidedByUsedInInvestingActivities',
+        'EntityPublicFloat',
+        'CommonStockSharesIssued',
+        'CommonStockSharesAuthorized',
+        'AssetsCurrent',
+        'CommonStockParOrStatedValuePerShare',
+        'LiabilitiesCurrent',
+        'CommonStockSharesOutstanding',
+        'OperatingIncomeLoss',
+        'IncomeTaxExpenseBenefit',
+        'PropertyPlantAndEquipmentNet',
+        'WeightedAverageNumberOfSharesOutstandingBasic',
+        'CashAndCashEquivalentsPeriodIncreaseDecrease',
+        'InterestExpense',
+        'EarningsPerShareBasic',
+        'WeightedAverageNumberOfDilutedSharesOutstanding',
+        'ShareBasedCompensation',
+        'EarningsPerShareDiluted',
+        'DeferredTaxAssetsValuationAllowance'
+        'Cash',
+        'Revenues'
+        'Depreciation',
+        'PreferredStockSharesIssued'
+        'GrossProfit',
+        'LongTermDebt',
+        'InventoryNet',
+        'Cash',
+        'PaymentsForRepurchaseOfCommonStock',
+        'GeneralAndAdministrativeExpense',
+        'AmortizationOfIntangibleAssets',
+        'Goodwill',
+        'TreasuryStockShares',
+        'TreasuryStockCommonShares',
+        'TreasuryStockSharesAcquired',
+        'TreasuryStockValue',
+        'SharePrice',
+        'Dividends',
+        'CommonStockDividendsPerShareDeclared',
+        'PaymentsOfDividends',
+        'PaymentsOfDividendsCommonStock',
+
+
+
+    ]
+
+    '''
+    count = Counter()
+
+
+    for idx, file in enumerate(directory):
         with open(data_path + '/' + file) as f:
             raw = json.load(f)
-            company_data = json.dumps(raw, indent=4)
+            #company_data = json.dumps(raw, indent=4)
             #print(company_data)
-            print(raw['cik'], get_keys_at_indent(raw, 0))
-        break
+            #if idx == 3:
+            count.update(get_keys_at_indent(raw, 2))
+                #break
+
+    top30 = count.most_common(30)
+
+    count = dict(sorted(count.items(), key=lambda item: item[1], reverse=True))
+    with open('categories.json', 'w') as f:
+        json.dump(count, f)
+    '''
+    with open('categories.json', 'r') as f:
+        categories = json.load(f)
+
+    [print(x, ':', y) for x, y in categories.items() if x.__contains__('Dividend')]
+    #[print(x, ':', y) for x, y in count.items()]
+    #[print(x) for x, y in top30]
